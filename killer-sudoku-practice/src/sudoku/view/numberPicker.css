@@ -1,0 +1,63 @@
+.number-picker {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+}
+
+.number-picker-button {
+    font-size: 40px;
+    font-family: 'Roboto Mono', sans-serif;
+    border: none;
+    background-color: #fff9fc;
+    border-radius: 5%;
+    color: #663344;
+    /* width: 100%; */
+    width: 10%;
+    padding: 5px;
+    vertical-align: middle;
+    text-align: center;
+    margin: 5px;
+    /* aspect-ratio: 1 / 1; */
+}
+.number-picker-button::before{
+    content: "";
+    /* padding-top: 100%; */
+    /* display: block; */
+}
+
+.number-picker-button:hover {
+    background-color: #ffeef9;
+}
+
+.number-picker-button:active{
+    background-color: #f3dee9;
+}
+
+.number-picker-item:hover {
+    background-color: #ffeef9;
+}
+
+.number-picker-item:active{
+    background-color: #f3def0;
+}
+
+/* 3個の場合 */
+/* .number-picker-item:first-child:nth-last-child(9),
+.number-picker-item:first-child:nth-last-child(9) ~ .item {
+    flex-basis: 31.33%;
+    background-color:#663344
+} */
+
+@media(max-width:800px){
+    #number-picker{
+        /*追加*/flex-wrap: nowrap;
+        width: 100%;
+        aspect-ratio: 9 / 1;
+        height: auto;
+    }
+    .number-picker-item {
+        margin: 0.5%;
+    }
+}

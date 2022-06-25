@@ -141,8 +141,8 @@ export class Cell {
     this.houses.add(house)
   }
 
-  public str(): string {
-    return this.filledNumber !== 0 ? this.filledNumber.toString() : "."
+  public str(emptyValue="."): string {
+    return this.filledNumber !== 0 ? this.filledNumber.toString() : emptyValue
   }
 
   public get coordinate(): string {
@@ -154,7 +154,7 @@ export class Cell {
   }
 
   public isEmpty(): boolean {
-    return Cell.isEmptyValue(this.clue) || Cell.isEmptyValue(this.value);
+    return Cell.isEmptyValue(this.clue) && Cell.isEmptyValue(this.value);
   }
 
   public hasClue(): boolean {

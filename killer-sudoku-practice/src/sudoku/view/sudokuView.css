@@ -1,0 +1,17 @@
+#sudoku-game {
+    width: 100%;
+    min-width: 300px;
+    max-width: 600px;
+}
+
+
+/* 3個の場合 */
+/* .number-picker-item:first-child:nth-last-child(9),
+.number-picker-item:first-child:nth-last-child(9) ~ .item {
+    flex-basis: 31.33%;
+    background-color:#663344
+} */
+
+@media(max-width:800px){
+
+}

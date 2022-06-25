@@ -42,7 +42,7 @@ interface State {
   editmode: SudokuEditTarget
 }
 
-export class SudokuView extends Component<Props, State> {
+export class SudokuBoard extends Component<Props, State> {
   static defaultProps = {
     cellSize: 55,
     clueColor: '#663344',
@@ -89,9 +89,9 @@ export class SudokuView extends Component<Props, State> {
 
     const boardString: string = this.state.sudoku.boardString()
     console.log(boardString)
-    for (let y=1; y<=9; y++) {
+    for (let y = 1; y <= 9; y++) {
       let a = ""
-      for (let x=1; x<=9; x++) {
+      for (let x = 1; x <= 9; x++) {
         a += this.state.sudoku.cellAt(x, y).str();
       }
       console.log(a);
@@ -163,105 +163,68 @@ export class SudokuView extends Component<Props, State> {
     const stageHeight = 2 * padding + boardHeight;
 
     return (
-      // <p>{boardString}</p>
-      // <Dropzone onDrop={this.onDrop} multiple={false} >
-      //   {({ getRootProps, getInputProps }) => (
-      //     <section className="container">
-      //       <div {...getRootProps({ className: 'dropzone' })}>
-      //         <input {...getInputProps()} />
-      //         <p>Drag 'n' drop some files here, or click to select files</p>
-      //       </div>
-      //       <aside>
-      //         <h4>Files</h4>
-      //         <ul>{files}</ul>
-      //         {layers}
-      //       </aside>
-      //     </section>
-      //   )}
-      // </Dropzone>
-      <div id="sudoku-game">
       <Stage id="sudoku-board" x={padding} y={padding} width={stageWidth} height={stageHeight} >
-      <Layer>
-        {/* <Rect
-          stroke={this.props.borderColor} strokeWidth={1}
-          width={boardWidth} height={boardHeight} /> */}
-        {
-          sudoku.board.map((cell, index) => (
-            <CellView 
-              cell={cell}
-              sudoku={this.state.sudoku} 
-              cellSize={this.props.cellSize}
-              clueColor={this.props.clueColor}
-              textColor={this.props.textColor}
-              borderColor={this.props.gridColor}
-              cellColor={this.getCellColor(cell.x, cell.y)}
-              gridStrokeWidth={this.props.gridStrokeWidth}
-              fontFamily={this.props.fontFamily}
-              activeFunc={this.setActiveCell}
-              key={index}
+        <Layer>
+          <Group name='Cells'>
+            {
+              sudoku.board.map((cell, index) => (
+                <CellView
+                  cell={cell}
+                  sudoku={this.state.sudoku}
+                  cellSize={this.props.cellSize}
+                  clueColor={this.props.clueColor}
+                  textColor={this.props.textColor}
+                  borderColor={this.props.gridColor}
+                  cellColor={this.getCellColor(cell.x, cell.y)}
+                  gridStrokeWidth={this.props.gridStrokeWidth}
+                  fontFamily={this.props.fontFamily}
+                  activeFunc={this.setActiveCell}
+                  key={index}
+                />
+              ))
+            }
+          </Group>
+          <Group name='Grid'>
+            <Group name='VerticalLine'>
+              {
+                range(sudoku.boxWidth + 1).map((col) => (
+                  <Line
+                    points={[col * boxWidth, 0, col * boxWidth, boardHeight]}
+                    stroke={this.props.boxStrokeColor}
+                    strokeWidth={this.props.boxStrokeWidth}
+                    lineCap="square"
+                    key={`VerticalLine_${col}`}
+                  />
+                ))
+              }
+            </Group>
+            <Group name='HorizontalLine'>
+              {
+                range(sudoku.boxHeight + 1).map((row) => (
+                  <Line
+                    points={[0, row * boxHeight, boardWidth, row * boxHeight]}
+                    stroke={this.props.boxStrokeColor}
+                    strokeWidth={this.props.boxStrokeWidth}
+                    lineCap="square"
+                    key={`HorizontalLine_${row}`}
+                  />
+                ))
+              }
+            </Group>
+          </Group>
+          {
+            <Rect
+              name={`ActiveCellRect`}
+              stroke={this.props.activeCellStrokeColor}
+              strokeWidth={this.props.activeCellStrokeWidth}
+              x={(this.state.activeCellX - 1) * cellSize}
+              y={(this.state.activeCellY - 1) * cellSize}
+              width={cellSize}
+              height={cellSize}
             />
-            // <Group
-            //   name={`Cell_${cell.x}_${cell.y} `}
-            //   cellX={cell.x}
-            //   cellY={cell.y}
-            //   x={(cell.x - 1) * cellSize} y={(cell.y - 1) * cellSize}
-            //   width={cellSize} height={cellSize}
-            //   onClick={ (event) => {
-            //     console.log(event.target)
-            //     console.log(event.target.parent)
-            //   }}>
-            //   <Rect
-            //     name={`CellRect_${cell.x}_${cell.y} `}
-            //     stroke={this.props.gridColor} strokeWidth={1} fill={this.getCellColor(cell.x, cell.y)}
-            //     x={0.5} y={0.5} width={cellSize} height={cellSize} />
-            //   <Text
-            //     name={`CellText_${cell.x}_${cell.y} `}
-            //     text={cell.str()} fontSize={fontSize} fontFamily='Roboto Mono'
-            //     fill={this.props.textColor}
-            //     y={fontSize * 0.02} width={cellSize} height={cellSize - fontSize * 0.02}
-            //     align='center' verticalAlign='middle' />
-            // </Group>
-          ))
-        }
-        {
-          range(sudoku.boxWidth + 1).map((col) => (
-            <Line 
-              points={[col*boxWidth, 0, col*boxWidth, boardHeight]}
-              stroke={this.props.boxStrokeColor}
-              strokeWidth={this.props.boxStrokeWidth}
-              lineCap="square"
-              key={`VerticalLine_${col}`}
-            />
-          ))
-        }
-        {
-          range(sudoku.boxHeight + 1).map((row) => (
-            <Line 
-              points={[0, row*boxHeight, boardWidth, row*boxHeight]}
-              stroke={this.props.boxStrokeColor}
-              strokeWidth={this.props.boxStrokeWidth}
-              lineCap="square"
-              key={`HorizontalLine_${row}`}
-            />
-          ))
-        }
-        {
-          <Rect
-            name={`ActiveCellRect`}
-            stroke={this.props.activeCellStrokeColor}
-            strokeWidth={this.props.activeCellStrokeWidth}
-            x={(this.state.activeCellX - 1) * cellSize}
-            y={(this.state.activeCellY - 1) * cellSize}
-            width={cellSize}
-            height={cellSize}
-          />
-        }
-      </Layer>
-    </Stage>
-    <SudokuController
-      sudoku={this.state.sudoku}
-      setPickedNumberFunc={this.setPickedNumber} />
-    </div>
+          }
+        </Layer>
+      </Stage>
     );
   }
 }

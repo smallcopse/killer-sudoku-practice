@@ -17,7 +17,7 @@
 .number-picker-item {
     font-size: 40px;
     font-family: 'Roboto Mono', sans-serif;
-    background-color: #ffeef9;
+    background-color: #fff3f9;
     /* border: 1px solid #663344; */
     box-sizing: border-box;
     /* border-color: #663344;
@@ -45,6 +45,13 @@
     display: flex;
 
     aspect-ratio: 1 / 1;
+}
+.number-picker-item:hover {
+    background-color: #ffeef9;
+}
+
+.number-picker-item:active{
+    background-color: #f3def0;
 }
 
 /* 3個の場合 */

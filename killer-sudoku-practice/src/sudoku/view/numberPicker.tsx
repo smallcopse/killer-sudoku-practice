@@ -5,8 +5,7 @@ import { Cell } from '../parts';
 import { SudokuPuzzle } from '../puzzle';
 // import './FileDragDrop.css'
 import { BasicSudokuPuzzle } from '../puzzle/basic_sudoku_puzzle';
-import { NumberPicker } from './numberPicker';
-import './sudokuController.css'
+import './numberPicker.css'
 
 interface Props {
   sudoku: BasicSudokuPuzzle,
@@ -24,7 +23,7 @@ interface State {
   activeCellY: number
 }
 
-export class SudokuController extends Component<Props, State> {
+export class NumberPicker extends Component<Props, State> {
   static defaultProps = {
     itemSize: 55,
     textColor: '#663344',
@@ -47,31 +46,17 @@ export class SudokuController extends Component<Props, State> {
     const itemSize: number = this.props.itemSize;
 
     return (
-      // <ul id="number-picker">
-      //   {
-      //     range(1, sudoku.maxNumber + 1).map((num) => 
-      //       (<li className='number-picker-item'
-      //           onClick={(event) => {
-      //             this.props.setPickedNumberFunc(num);
-      //           }} key={`number-picker-item-${num}`}>{num}</li>)
-      //     )
-      //   }
-      // </ul>
-      <NumberPicker 
-        sudoku={this.state.sudoku}
-        setPickedNumberFunc={this.props.setPickedNumberFunc}
-      />
-      // <div className="number-picker">
-      //    {
-      //      range(1, sudoku.maxNumber + 1).map((num) => 
-      //        (<button className='number-picker-button'
-      //           onClick={(event) => {
-      //             this.props.setPickedNumberFunc(num);
-      //           }}
-      //           key={`number-picker-button-${num}`}>{num}</button>)
-      //      )
-      //    }
-      // </div>
+      <div className="number-picker">
+         {
+           range(1, sudoku.maxNumber + 1).map((num) => 
+             (<button className='number-picker-button'
+                onClick={(event) => {
+                  this.props.setPickedNumberFunc(num);
+                }}
+                key={`number-picker-button-${num}`}>{num}</button>)
+           )
+         }
+      </div>
     );
   }
 }

@@ -1,6 +1,7 @@
 import { KonvaEventObject } from 'konva/lib/Node';
 import React, { Component } from 'react';
 import { Stage, Layer, Star, Text, Rect, Group } from 'react-konva';
+import { range } from '../../util/util';
 import { Cell } from '../parts';
 import { SudokuPuzzle } from '../puzzle';
 // import './FileDragDrop.css'
@@ -11,6 +12,7 @@ interface Props {
   cell: Cell,
   sudoku: BasicSudokuPuzzle,
   cellSize: number,
+  clueColor: string,
   textColor: string,
   borderColor: string,
   cellColor: string,
@@ -27,7 +29,8 @@ interface State {
 export class CellView extends Component<Props, State> {
   static defaultProps = {
     cellSize: 55,
-    textColor: '#663344',
+    clueColor: '#663344',
+    textColor: '#dd5577',
     borderColor: '#663344',
     cellColor: '#ffffff',
     gridStrokeWidth: 1,
@@ -45,8 +48,45 @@ export class CellView extends Component<Props, State> {
   render() {
     const cell: Cell = this.props.cell;
     const cellSize: number = this.props.cellSize;
-    const fontSize: number = cellSize * 0.65
+    const fontSize: number = cellSize * 0.65;
+    const noteFontSize: number = cellSize * 0.2;
     const dy: number = fontSize * 0.05
+    const noteHeight = Math.ceil(Math.sqrt(cell.maxNumber))
+    const noteWidth = (cell.maxNumber / noteHeight) | 0;
+    const noteCellSize = cellSize / noteWidth;
+
+    var textElement = 
+      <Text
+        name={`CellText_${cell.x}_${cell.y}`}
+        text={cell.str("")}
+        fontSize={fontSize}
+        fontFamily={this.props.fontFamily}
+        fill={cell.hasClue() ? this.props.clueColor : this.props.textColor}
+        y={dy}
+        width={cellSize}
+        height={cellSize - dy}
+        align='center'
+        verticalAlign='middle'
+      />;
+
+    var noteElement = range(1, cell.maxNumber + 1).map((n) => (
+      <Text
+        name={`CellNote_${cell.x}_${cell.y}_${n}`}
+        text={cell.notes.has(n) ? `${n}`: ""}
+        fontSize={noteFontSize}
+        fontFamily={this.props.fontFamily}
+        fill={this.props.textColor}
+        x={(n%noteWidth) * noteCellSize}
+        y={(n/noteWidth | 0) * noteCellSize}
+        width={noteCellSize}
+        height={noteCellSize}
+        align='center'
+        verticalAlign='middle'
+        key={`CellNote_${cell.x}_${cell.y}_${n}`}
+      />
+      )
+    )
+      
 
     return (
       <Group
@@ -66,18 +106,7 @@ export class CellView extends Component<Props, State> {
           width={cellSize}
           height={cellSize}
         />
-        <Text
-          name={`CellText_${cell.x}_${cell.y}`}
-          text={cell.str()}
-          fontSize={fontSize}
-          fontFamily={this.props.fontFamily}
-          fill={this.props.textColor}
-          y={dy}
-          width={cellSize}
-          height={cellSize - dy}
-          align='center'
-          verticalAlign='middle'
-        />
+        {cell.isEmpty() ? noteElement: textElement}
       </Group>
     );
   }
